@@ -4,7 +4,6 @@ from pynput.mouse import Button, Controller as MouseController
 from pynput.keyboard import Key, Controller as KeyboardController
 import platform
 import subprocess
-import psutil
 
 app = Flask(__name__)
 mouse = MouseController()
