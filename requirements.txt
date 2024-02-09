@@ -1,1 +1,4 @@
-flask,pynput,platform,subprocess,
+flask
+pynput
+platform
+subprocess
