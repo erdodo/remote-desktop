@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!--
+    En üste sabitlenmiş mouse alanı
+    altında sabit4 tane buton (sol click(b), orta click(k), sağ click(b),double click(k))
+    en altta 6 buton
+    1. media menü açma/kapama
+        1.1. play/pause
+        1.2. volume up
+        1.3. volume down
+        1.4. next
+        1.5. previous
+        1.6. stop
+        1.7. mute
+        1.8. fullscreen
+        1.9. exit fullscreen
+        1.10. yukarı
+        1.11. aşağı
+        1.12. sol
+        1.13. sağ
+    2. açık programlar
+        2.1. chrome
+        2.2. vs code
+        2.3. file explorer
+        2.4. terminal
+        2.5. task manager
+        2.6. notepad
+    3. tarayıcı kısayolları
+        3.1. yeni sekme
+        3.2. yeni pencere
+        3.3. geri
+        3.4. ileri
+        3.5. yenile
+        3.6. tam ekran
+    4. sistem kısayolları
+        4.1. kapat
+        4.2. yeniden başlat
+        4.3. uyku
+        4.4. kilit
+        4.5. oturumu kapat
+        4.6. ekranı kapat
+    5. klavye 
+    6. fn tuşları
+-->
+<style>
+    body {
+        height: -webkit-fill-available;
+    }
+
+    .footer-button {
+        width: calc(100% / 6);
+        border-radius: 10px;
+    }
+
+    .button {
+        width: 80px;
+        height: 80px;
+        border: 1px solid gray;
+        background-color: #f3f4f6;
+        border-radius: 100px;
+    }
+
+    .button:hover {
+        background-color: #e4e5e7;
+    }
+
+    .button:active {
+        transform: scale(0.9);
+        background-color: #d4d5d7;
+    }
+
+    .sabit-div {
+        position: fixed;
+        bottom: 0;
+    }
+</style>
+
+
+<body class="h-screen text-xl">
+    <div class="fixed top-2 right-2 text-white flex flex-col w-full">
+
+        <div class="flex justify-end">
+            <span class="mr-1">DPI: </span>
+            <input value="3" type="range" max="10" min="1" id="mouseSpeed" class="bg-gray-500 w-36 " />
+        </div>
+        <input type="text" id="keyboardBox" class=" pl-4 w-full bg-transparent outline-0 focus:outline-0" />
+    </div>
+
+
+    <div id="mouseBox" class="w-full h-[100vh] bg-gray-500"></div>
+    <div class=" sabit-div">
+        <div class="flex h-[10vh]">
+            <button onclick="mousePress('left')" class="w-[35%] bg-sky-800 text-white">LEFT</button>
+            <button onclick="mousePress('middle')" class="w-[15%] bg-sky-800 text-white">MID</button>
+            <button onclick="mousePress('right')" class="w-[35%] bg-sky-800 text-white">RIGHT</button>
+            <button onclick="mousePress('double')" class="w-[15%] bg-sky-800 text-white">DBL</button>
+        </div>
+        <div class="flex h-[10vh] p-1 bg-white">
+            <button class="footer-button" id="mediaButton">
+                <img src="./assets/media.gif" alt="">
+            </button>
+            <button class="footer-button" id="appListButton">
+                <img src="./assets/app.gif" alt="">
+            </button>
+            <button class="footer-button" id="browserButton">
+                <img src="./assets/browser.gif" alt="">
+            </button>
+            <button class="footer-button">
+                <img src="./assets/system.gif" alt="">
+            </button>
+            <button class="footer-button" id="keyboardButton">
+                <img src="./assets/keyboard.gif" alt="">
+            </button>
+            <button class="footer-button" id="functionButton">
+                <img src="./assets/function.gif" alt="">
+            </button>
+
+
+        </div>
+        <div id="mediaBox" class="transition duration-300 grid-cols-3 gap-2 p-2" style="display: none;">
+            <button onclick="keyPress('fullscreen')" class="w-full button"><i class="fa fa-arrows-alt"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('volume_up')" class="w-full button"><i class="fa fa-volume-up"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('stop')" class="w-full button"><i class="fa fa-stop-circle"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('previous')" class="w-full button"><i class="fa fa-fast-backward"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('play_pause')" class="w-full button"><i class="fa fa-play-circle"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('next')" class="w-full button"><i class="fa fa-fast-forward"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('mute')" class="w-full button"><i class="fa fa-volume-off" aria-hidden="true"></i>
+            </button>
+            <button onclick="keyPress('volume_down')" class="w-full button"><i class="fa fa-volume-down"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('enter')" class="w-full button"><i class="fa fa-sign-in"
+                    aria-hidden="true"></i></button>
+        </div>
+        <div id="appListBox" class=" gap-2 p-2" style="display: none;"></div>
+        <div id="browserBox" class=" gap-2 p-2 grid-cols-3" style="display: none;">
+            <button onclick="keyPress('fullscreen')" class="w-full button"><i class="fa fa-arrows-alt"
+                    aria-hidden="true"></i></button>
+            <button onclick="keyPress('zoom_in')" class="w-full button"><i class="fa fa-search-plus"
+                    aria-hidden="true"></i>
+            </button>
+            <button onclick="keyPress('zoom_out')" class="w-full button"><i class="fa fa-search-minus"
+                    aria-hidden="true"></i>
+            </button>
+            <button onclick="keyPress('new_tab')" class="w-full button">
+                <i class="fa fa-plus-square" aria-hidden="true"></i>
+            </button>
+            <button onclick="keyPress('close_tab')" class="w-full button">
+                <i class="fa fa-minus-square" aria-hidden="true"></i>
+            </button>
+            <button onclick="keyPress('reload')" class="w-full button">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+            <div class="col-span-3 flex gap-2">
+                <a onclick="keyPress('google')">
+                    Google
+                </a>
+                <a onclick="keyPress('youtube')">
+                    Youtube
+                </a>
+                <a onclick="keyPress('netflix')">
+                    Netflix
+                </a>
+            </div>
+        </div>
+        <div id="functionBox" class=" gap-2 p-2 grid-cols-3" style="display: none;">
+            <button onclick="keyPress('backspace')" class="w-full button">BACK</button>
+            <button onclick="keyPress('up')" class="w-full button">UP
+            </button>
+            <button onclick="keyPress('enter')" class="w-full button">ENTER
+            </button>
+            <button onclick="keyPress('left')" class="w-full button">
+                left
+            </button>
+            <button onclick="keyPress('down')" class="w-full button">
+                bottom
+            </button>
+            <button onclick="keyPress('right')" class="w-full button">
+                right
+            </button>
+        </div>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./script.js"> </script>
+
+</body>
+
+</html>
