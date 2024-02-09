@@ -4,10 +4,21 @@ from pynput.mouse import Button, Controller as MouseController
 from pynput.keyboard import Key, Controller as KeyboardController
 import platform
 import subprocess
+import socket
 
 app = Flask(__name__)
 mouse = MouseController()
 keyboard = KeyboardController()
+
+# Yerel IP adresini al
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+ip_address = s.getsockname()[0]
+s.close()
+
+# IP adresini bir dosyaya yaz
+with open('ip_address.json', 'w') as f:
+    f.write('{"ip_address":"http://'+ip_address+':5005"}' )
 
 @app.route('/mouse_move', methods=['POST'])
 def mouse_move():
@@ -210,4 +221,4 @@ def get_open_applications():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5005)

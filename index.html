@@ -63,6 +63,11 @@
         border-radius: 10px;
     }
 
+    .footer-button img {
+        height: 50px;
+        width: 100%;
+    }
+
     .button {
         width: 80px;
         height: 80px;
@@ -91,7 +96,8 @@
     <div class="fixed top-2 right-2 text-white flex flex-col w-full">
 
         <div class="flex justify-end">
-            <span class="mr-1">DPI: </span>
+            <span id="ipAddress"></span>-
+            <span class="mx-1">DPI: </span>
             <input value="3" type="range" max="10" min="1" id="mouseSpeed" class="bg-gray-500 w-36 " />
         </div>
         <input type="text" id="keyboardBox" class=" pl-4 w-full bg-transparent outline-0 focus:outline-0" />

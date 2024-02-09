@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  fetch("/ip_address.json")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      $("#ipAddress").text(data.ip_address);
+    });
   var startX, startY;
   let isMove = false;
 
@@ -19,7 +26,7 @@ $(document).ready(function () {
     startY = touch.pageY;
     const speed = $("#mouseSpeed").val();
     console.log(speed);
-    $.post("http://192.168.31.130:5001/mouse_move", { x: x * speed, y: y * speed }, function (data, status) {
+    $.post($("#ipAddress").text() + "/mouse_move", { x: x * speed, y: y * speed }, function (data, status) {
       console.log("Data: " + data + "\nStatus: " + status);
     });
   });
@@ -31,7 +38,7 @@ $(document).ready(function () {
       isMove = false;
       return;
     }
-    $.post("http://192.168.31.130:5001/mouse_click", { button: "left" }, function (data, status) {
+    $.post($("#ipAddress").text() + "/mouse_click", { button: "left" }, function (data, status) {
       console.log("Data: " + data + "\nStatus: " + status);
     });
   });
@@ -68,7 +75,7 @@ $(document).ready(function () {
   $("#keyboardBox").on("keyup", function (e) {
     if (e.key == "Enter") {
       const val = $("#keyboardBox").val();
-      $.post("http://192.168.31.130:5001/keyboard_type", { keys: val }, function (data, status) {
+      $.post($("#ipAddress").text() + "/keyboard_type", { keys: val }, function (data, status) {
         console.log("Data: " + data + "\nStatus: " + status);
       });
       $("#keyboardBox")[0].value = "";
@@ -87,7 +94,7 @@ $(document).ready(function () {
 
   $("#appListButton").click(function () {
     resetFooterSelect();
-    $.post("http://192.168.31.130:5001/app_list", function (data, status) {
+    $.post($("#ipAddress").text() + "/app_list", function (data, status) {
       data.forEach((element) => {
         $("#appListBox").append('<button class="appButton" onclick="openApp(\'' + element + "')\">" + element + "</button>");
       });
@@ -102,19 +109,19 @@ $(document).ready(function () {
 });
 
 function keyPress(key) {
-  $.post("http://192.168.31.130:5001/press_key", { key: key }, function (data, status) {
+  $.post($("#ipAddress").text() + "/press_key", { key: key }, function (data, status) {
     console.log("Data: " + data + "\nStatus: " + status);
   });
 }
 
 function mousePress(key) {
-  $.post("http://192.168.31.130:5001/mouse_click", { button: key }, function (data, status) {
+  $.post($("#ipAddress").text() + "/mouse_click", { button: key }, function (data, status) {
     console.log("Data: " + data + "\nStatus: " + status);
   });
 }
 
 function openApp(appName) {
-  $.post("http://192.168.31.130:5001/app_select", { app_name: appName }, function (data, status) {
+  $.post($("#ipAddress").text() + "/app_select", { app_name: appName }, function (data, status) {
     console.log("Data: " + data + "\nStatus: " + status);
   });
 }
